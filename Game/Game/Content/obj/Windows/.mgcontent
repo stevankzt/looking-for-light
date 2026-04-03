@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/Audio/DropsSound.mp3</File>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/Audio/Footstep1.mp3</File>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/Dungeon_Tileset.png</File>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/enemies-skeleton1_idle.png</File>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/Fonts/PixelFont.spritefont</File>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/Images/map.png</File>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/priest1_v1_1.png</File>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/skeleton_v1_1.png</File>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/vampire_v1_1.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
