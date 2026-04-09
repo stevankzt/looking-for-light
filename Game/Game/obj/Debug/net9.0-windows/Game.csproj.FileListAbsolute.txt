@@ -36,3 +36,5 @@ C:\Users\uvan2\OneDrive\Рабочий стол\gameDev\looking-for-light\Game\G
 C:\Users\uvan2\OneDrive\Рабочий стол\gameDev\looking-for-light\Game\Game\obj\Debug\net9.0-windows\Game.pdb
 C:\Users\uvan2\OneDrive\Рабочий стол\gameDev\looking-for-light\Game\Game\obj\Debug\net9.0-windows\Game.genruntimeconfig.cache
 C:\Users\uvan2\OneDrive\Рабочий стол\gameDev\looking-for-light\Game\Game\obj\Debug\net9.0-windows\ref\Game.dll
+C:\Users\uvan2\OneDrive\Рабочий стол\gameDev\looking-for-light\Game\Game\bin\Debug\net9.0-windows\Content\collision tiles.xnb
+C:\Users\uvan2\OneDrive\Рабочий стол\gameDev\looking-for-light\Game\Game\bin\Debug\net9.0-windows\Content\collisionTiles.xnb

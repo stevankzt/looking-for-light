@@ -6,6 +6,7 @@
   <SourceFiles>
     <File>C:/Users/uvan2/OneDrive/Рабочий стол/gameDev/looking-for-light/Game/Game/Content/Audio/DropsSound.mp3</File>
     <File>C:/Users/uvan2/OneDrive/Рабочий стол/gameDev/looking-for-light/Game/Game/Content/Audio/Footstep1.mp3</File>
+    <File>C:/Users/uvan2/OneDrive/Рабочий стол/gameDev/looking-for-light/Game/Game/Content/collisionTiles.png</File>
     <File>C:/Users/uvan2/OneDrive/Рабочий стол/gameDev/looking-for-light/Game/Game/Content/Dungeon_Tileset.png</File>
     <File>C:/Users/uvan2/OneDrive/Рабочий стол/gameDev/looking-for-light/Game/Game/Content/enemies-skeleton1_idle.png</File>
     <File>C:/Users/uvan2/OneDrive/Рабочий стол/gameDev/looking-for-light/Game/Game/Content/Fonts/PixelFont.spritefont</File>
@@ -15,6 +16,7 @@
     <File>C:/Users/uvan2/OneDrive/Рабочий стол/gameDev/looking-for-light/Game/Game/Content/vampire_v1_1.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

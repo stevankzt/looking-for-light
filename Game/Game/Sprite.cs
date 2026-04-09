@@ -1,38 +1,52 @@
+// A Sprite class for keeping track of image and position data for our player.
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.MediaFoundation;
+using Microsoft.Xna.Framework.Input;
 
 namespace LookingForLight;
 
-public class Sprite
-{
-    /*private static readonly float SCALE = 5f;*/
-    
+public class Sprite {
+
     public Texture2D texture;
+    public Rectangle rect;
+    public Rectangle srect;
+    public Vector2 velocity;
 
-    public Rectangle drect, srect;
-    
-    public Sprite(Texture2D texture, Rectangle drect, Rectangle srect)
-    {
+    public Sprite(
+        Texture2D texture,
+        Rectangle rect,
+        Rectangle srect
+    ) {
         this.texture = texture;
-        this.drect = drect;
+        this.rect = rect;
         this.srect = srect;
+        velocity = new();
     }
 
-    public virtual void Update()
-    {
-        
+    public void Update(KeyboardState keystate) {
+        velocity = Vector2.Zero;
+
+        if (keystate.IsKeyDown(Keys.D)) {
+            velocity.X = 5;
+        }
+        if (keystate.IsKeyDown(Keys.A)) {
+            velocity.X = -5;
+        }
+        if (keystate.IsKeyDown(Keys.W)) {
+            velocity.Y = -5;
+        }
+        if (keystate.IsKeyDown(Keys.S)) {
+            velocity.Y = 5;
+        }
     }
-    
-    public virtual void Draw(SpriteBatch spriteBatch, Vector2 offset)
-    {
-        Rectangle dest = new(
-            drect.X + (int)offset.X,
-            drect.Y + (int)offset.Y,
-            drect.Width,
-            drect.Height
+
+    public void Draw(SpriteBatch spriteBatch) {
+        spriteBatch.Draw(
+            texture,
+            rect,
+            srect,
+            Color.White
         );
-        
-        spriteBatch.Draw(texture, dest, srect ,Color.White);
     }
 }

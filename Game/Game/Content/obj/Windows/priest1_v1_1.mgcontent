@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/priest1_v1_1.png</SourceFile>
-  <SourceTime>2026-03-28T18:04:17.5581198+05:00</SourceTime>
-  <DestFile>C:/Users/uvan2/OneDrive/Рабочий стол/looking-for-light/LookingForLight/LookingForLight/Content/bin/Windows/priest1_v1_1.xnb</DestFile>
-  <DestTime>2026-04-02T18:11:51.7871106+05:00</DestTime>
+  <SourceFile>C:/Users/uvan2/OneDrive/Рабочий стол/gameDev/looking-for-light/Game/Game/Content/priest1_v1_1.png</SourceFile>
+  <SourceTime>2026-04-03T19:31:46.0444628+05:00</SourceTime>
+  <DestFile>C:/Users/uvan2/OneDrive/Рабочий стол/gameDev/looking-for-light/Game/Game/Content/bin/Windows/priest1_v1_1.xnb</DestFile>
+  <DestTime>2026-04-07T20:44:35.7628467+05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2025-10-20T19:25:32+05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
