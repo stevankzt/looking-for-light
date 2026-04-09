@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -25,9 +24,10 @@ public class Game1 : Game
     private Texture2D mapLevel1;
     private Texture2D hitBoxTexture;
     private FollowCamera followCamera;
+    private CollisionSystem collisionSystem;
     
     private int TILESIZE = 32;
-    Sprite player;
+    Player player;
     private List<Rectangle> intersections;
     private Texture2D rectangleTexture;
     
@@ -42,12 +42,18 @@ public class Game1 : Game
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
+        var displayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+        _graphics.PreferredBackBufferWidth = displayMode.Width;
+        _graphics.PreferredBackBufferHeight = displayMode.Height;
+        _graphics.HardwareModeSwitch = false;
+        _graphics.IsFullScreen = true;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         floor = LoadMap("../../../Data/level1_floor.csv");
         walls = LoadMap("../../../Data/level1_walls.csv");
         collisions = LoadMap("../../../Data/level1_collisions.csv");
         followCamera = new FollowCamera(Vector2.Zero);
+        collisionSystem = new CollisionSystem(collisions, TILESIZE);
         intersections = new();
     }
 
@@ -82,6 +88,7 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
+        _graphics.ApplyChanges();
         base.Initialize();
     }
 
@@ -98,7 +105,7 @@ public class Game1 : Game
         
         rectangleTexture = new Texture2D(GraphicsDevice, 1, 1);
         
-        player = new Sprite(playerTexture, new(TILESIZE,TILESIZE, TILESIZE, TILESIZE), new(0,0,16,16));
+        player = new Player(playerTexture, new(TILESIZE,TILESIZE, TILESIZE, TILESIZE), new(0,0,16,16));
         
         font = Content.Load<SpriteFont>("Fonts/PixelFont");
         song = Content.Load<Song>("Audio/DropsSound");
@@ -134,53 +141,7 @@ public class Game1 : Game
         }
 
         player.Update(currentKBState);
-        
-        player.rect.X += (int)player.velocity.X;
-        intersections = getIntersectingTilesHorizontal(player.rect);
-
-        foreach (var rect in intersections) {
-            
-            if (collisions.TryGetValue(new Vector2(rect.X, rect.Y), out int _val)) {
-                
-                Rectangle collision = new(
-                    rect.X * TILESIZE,
-                    rect.Y * TILESIZE,
-                    TILESIZE,
-                    TILESIZE
-                );
-                
-                if (player.velocity.X > 0.0f) {
-                    player.rect.X = collision.Left - player.rect.Width;
-                } else if (player.velocity.X < 0.0f) {
-                    player.rect.X = collision.Right;
-                }
-
-            }
-
-        }
-
-        player.rect.Y += (int)player.velocity.Y;
-        intersections = getIntersectingTilesVertical(player.rect);
-
-        foreach (var rect in intersections) {
-
-            if (collisions.TryGetValue(new Vector2(rect.X, rect.Y), out int _val)) {
-
-                Rectangle collision = new Rectangle(
-                    rect.X * TILESIZE,
-                    rect.Y * TILESIZE,
-                    TILESIZE,
-                    TILESIZE
-                );
-
-                if (player.velocity.Y > 0.0f) {
-                    player.rect.Y = collision.Top - player.rect.Height;
-                } else if (player.velocity.Y < 0.0f) {
-                    player.rect.Y = collision.Bottom;
-                }
-                
-            }
-        }
+        player.rect = collisionSystem.MoveWithCollisions(player.rect, player.velocity, out intersections);
 
         followCamera.Follow(
             player.rect,
@@ -190,56 +151,6 @@ public class Game1 : Game
         base.Update(gameTime);
     }
     
-    public List<Rectangle> getIntersectingTilesHorizontal(Rectangle target) {
-
-        List<Rectangle> intersections = new();
-
-        int widthInTiles = (target.Width - (target.Width % TILESIZE)) / TILESIZE;
-        int heightInTiles = (target.Height - (target.Height % TILESIZE)) / TILESIZE;
-
-        for (int x = 0; x <= widthInTiles; x++) {
-            for (int y = 0; y <= heightInTiles; y++) {
-
-                intersections.Add(new Rectangle(
-
-                    (target.X + x*TILESIZE) / TILESIZE,
-                    (target.Y + y*(TILESIZE-1)) / TILESIZE,
-                    TILESIZE,
-                    TILESIZE
-
-                ));
-
-            }
-        }
-
-        return intersections;
-    }
-    
-    public List<Rectangle> getIntersectingTilesVertical(Rectangle target) {
-
-        List<Rectangle> intersections = new();
-
-        int widthInTiles = (target.Width - (target.Width % TILESIZE)) / TILESIZE;
-        int heightInTiles = (target.Height - (target.Height % TILESIZE)) / TILESIZE;
-
-        for (int x = 0; x <= widthInTiles; x++) {
-            for (int y = 0; y <= heightInTiles; y++) {
-
-                intersections.Add(new Rectangle(
-
-                    (target.X + x*(TILESIZE-1)) / TILESIZE,
-                    (target.Y + y*TILESIZE) / TILESIZE,
-                    TILESIZE,
-                    TILESIZE
-
-                ));
-
-            }
-        }
-
-        return intersections;
-    }
-
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
