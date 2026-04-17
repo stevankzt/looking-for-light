@@ -28,6 +28,7 @@ public class Game1 : Game
     
     private int TILESIZE = 32;
     Player player;
+    Enemy enemy;
     private List<Rectangle> intersections;
     private Texture2D rectangleTexture;
     
@@ -38,6 +39,14 @@ public class Game1 : Game
     SoundEffectInstance effectInstance;
     
     KeyboardState prevKBState;
+    MouseState prevMouseState;
+
+    private Rectangle lastAttackHitbox;
+    private bool showAttackHitbox;
+    private float attackDebugTimer;
+    private const float AttackDebugDuration = 0.08f;
+    private const float AttackCooldown = 0.25f;
+    private float attackCooldownTimer;
     
     public Game1()
     {
@@ -100,12 +109,13 @@ public class Game1 : Game
         hitBoxTexture = Content.Load<Texture2D>("collisionTiles");
         
         Texture2D playerTexture = Content.Load<Texture2D>("priest1_v1_1");
-        Texture2D enemyTexture =  Content.Load<Texture2D>("skeleton_v1_1");
-        Texture2D enemyTexture2 = Content.Load<Texture2D>("vampire_v1_1");
+        Texture2D enemyTexture = Content.Load<Texture2D>("skeleton_v1_1");
         
         rectangleTexture = new Texture2D(GraphicsDevice, 1, 1);
+        rectangleTexture.SetData(new[] { Color.White });
         
         player = new Player(playerTexture, new(TILESIZE,TILESIZE, TILESIZE, TILESIZE), new(0,0,16,16));
+        enemy = new Enemy(enemyTexture, new(TILESIZE * 8, TILESIZE * 4, TILESIZE, TILESIZE), new(0, 0, 16, 16));
         
         font = Content.Load<SpriteFont>("Fonts/PixelFont");
         song = Content.Load<Song>("Audio/DropsSound");
@@ -122,6 +132,8 @@ public class Game1 : Game
             Exit();
         
         KeyboardState currentKBState = Keyboard.GetState();
+        MouseState currentMouseState = Mouse.GetState();
+        var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         
         if (currentKBState.IsKeyDown(Keys.A))
         {
@@ -140,13 +152,43 @@ public class Game1 : Game
             effectInstance.Play();
         }
 
-        player.Update(currentKBState);
+        player.Update(currentKBState, deltaTime);
         player.rect = collisionSystem.MoveWithCollisions(player.rect, player.velocity, out intersections);
+
+        enemy.Update(player, collisionSystem, deltaTime);
+
+        attackCooldownTimer = Math.Max(0f, attackCooldownTimer - deltaTime);
+        if (showAttackHitbox)
+        {
+            attackDebugTimer -= deltaTime;
+            if (attackDebugTimer <= 0f)
+            {
+                showAttackHitbox = false;
+            }
+        }
 
         followCamera.Follow(
             player.rect,
             new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)
         );
+
+        var clickedLeftMouse = currentMouseState.LeftButton == ButtonState.Pressed &&
+                                prevMouseState.LeftButton == ButtonState.Released;
+
+        if (clickedLeftMouse && attackCooldownTimer <= 0f)
+        {
+            lastAttackHitbox = BuildAttackHitbox(currentMouseState);
+            showAttackHitbox = true;
+            attackDebugTimer = AttackDebugDuration;
+            attackCooldownTimer = AttackCooldown;
+
+            if (enemy.IsAlive && lastAttackHitbox.Intersects(enemy.rect))
+            {
+                enemy.TakeDamage(1);
+            }
+        }
+
+        prevMouseState = currentMouseState;
 
         base.Update(gameTime);
     }
@@ -183,15 +225,53 @@ public class Game1 : Game
         }
         
         player.Draw(_spriteBatch);
+        if (enemy.IsAlive)
+        {
+            enemy.Draw(_spriteBatch);
+            DrawRectHollow(_spriteBatch, enemy.rect, 4);
+        }
+
         DrawRectHollow(_spriteBatch, player.rect, 4);
+        if (showAttackHitbox)
+        {
+            DrawRectHollow(_spriteBatch, lastAttackHitbox, 2);
+        }
         
         _spriteBatch.End(); //конец рисования
 
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-        _spriteBatch.DrawString(font, "LOL 0_0", Vector2.Zero, Color.White);
+        _spriteBatch.DrawString(font, $"Player HP: {player.Health}", Vector2.Zero, Color.White);
+        _spriteBatch.DrawString(font, $"Enemy HP: {enemy.Health}", new Vector2(0, 20), Color.White);
         _spriteBatch.End();
         
         base.Draw(gameTime);
+    }
+
+    private Rectangle BuildAttackHitbox(MouseState mouseState)
+    {
+        var attackSize = TILESIZE * 2;
+        var playerCenter = new Vector2(player.rect.Center.X, player.rect.Center.Y);
+        var mouseWorld = new Vector2(
+            mouseState.X - followCamera.position.X,
+            mouseState.Y - followCamera.position.Y
+        );
+
+        var direction = mouseWorld - playerCenter;
+        if (direction.LengthSquared() < 0.0001f)
+        {
+            direction = Vector2.UnitX;
+        }
+        direction.Normalize();
+
+        var distanceFromPlayer = player.rect.Width / 2f + attackSize / 2f;
+        var hitboxCenter = playerCenter + direction * distanceFromPlayer;
+
+        return new Rectangle(
+            (int)(hitboxCenter.X - attackSize / 2f),
+            (int)(hitboxCenter.Y - attackSize / 2f),
+            attackSize,
+            attackSize
+        );
     }
 
     private void DrawLayer(int display_tilesize, int num_tiles_per_row, int pixel_tilesize, Dictionary<Vector2, int> layer,  Texture2D texture)
