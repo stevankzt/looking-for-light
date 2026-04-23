@@ -13,19 +13,133 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Audio/DropsSound.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Audio/DropsSound.mp3
-
-#begin Audio/Footstep1.mp3
-/importer:Mp3Importer
+#begin Audio/FootstepsFloor/Steps_floor-001.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Audio/Footstep1.mp3
+/build:Audio/FootstepsFloor/Steps_floor-001.ogg
 
-#begin collisionTiles.png
+#begin Audio/FootstepsFloor/Steps_floor-002.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-002.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-003.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-003.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-004.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-004.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-005.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-005.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-006.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-006.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-007.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-007.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-008.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-008.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-009.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-009.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-010.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-010.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-011.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-011.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-012.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-012.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-013.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-013.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-014.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-014.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-015.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-015.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-016.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-016.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-017.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-017.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-018.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-018.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-019.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-019.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-020.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-020.ogg
+
+#begin Audio/FootstepsFloor/Steps_floor-021.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/FootstepsFloor/Steps_floor-021.ogg
+
+#begin Enemies/Skeleton1/enemies-skeleton1_death.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,9 +149,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:collisionTiles.png
+/build:Enemies/Skeleton1/enemies-skeleton1_death.png
 
-#begin Dungeon_Tileset.png
+#begin Enemies/Skeleton1/enemies-skeleton1_idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,9 +161,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Dungeon_Tileset.png
+/build:Enemies/Skeleton1/enemies-skeleton1_idle.png
 
-#begin enemies-skeleton1_idle.png
+#begin Enemies/Skeleton1/enemies-skeleton1_movement.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -59,7 +173,151 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:enemies-skeleton1_idle.png
+/build:Enemies/Skeleton1/enemies-skeleton1_movement.png
+
+#begin Enemies/Skeleton1/enemies-skeleton1_take_damage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Skeleton1/enemies-skeleton1_take_damage.png
+
+#begin Enemies/Skeleton1/enemies-skeleton1-attack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Skeleton1/enemies-skeleton1-attack.png
+
+#begin Enemies/Skeleton2/enemies-skeleton2_attack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Skeleton2/enemies-skeleton2_attack.png
+
+#begin Enemies/Skeleton2/enemies-skeleton2_death.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Skeleton2/enemies-skeleton2_death.png
+
+#begin Enemies/Skeleton2/enemies-skeleton2_idle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Skeleton2/enemies-skeleton2_idle.png
+
+#begin Enemies/Skeleton2/enemies-skeleton2_movemen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Skeleton2/enemies-skeleton2_movemen.png
+
+#begin Enemies/Skeleton2/enemies-skeleton2_take_damage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Skeleton2/enemies-skeleton2_take_damage.png
+
+#begin Enemies/Vampire/enemies-vampire_attack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Vampire/enemies-vampire_attack.png
+
+#begin Enemies/Vampire/enemies-vampire_death.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Vampire/enemies-vampire_death.png
+
+#begin Enemies/Vampire/enemies-vampire_idle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Vampire/enemies-vampire_idle.png
+
+#begin Enemies/Vampire/enemies-vampire_movement.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Vampire/enemies-vampire_movement.png
+
+#begin Enemies/Vampire/enemies-vampire_take_damage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/Vampire/enemies-vampire_take_damage.png
 
 #begin Fonts/PixelFont.spritefont
 /importer:FontDescriptionImporter
@@ -68,7 +326,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/PixelFont.spritefont
 
-#begin Images/map.png
+#begin Keys/key.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -78,9 +336,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/map.png
+/build:Keys/key.png
 
-#begin priest1_v1_1.png
+#begin Player/player.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -90,9 +348,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:priest1_v1_1.png
+/build:Player/player.png
 
-#begin skeleton_v1_1.png
+#begin TileSets/collisionTiles.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -102,9 +360,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:skeleton_v1_1.png
+/build:TileSets/collisionTiles.png
 
-#begin vampire_v1_1.png
+#begin TileSets/Dungeon_Tileset.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -114,5 +372,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:vampire_v1_1.png
+/build:TileSets/Dungeon_Tileset.png
 
