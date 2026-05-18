@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
@@ -29,7 +29,7 @@ public class Game1 : Game
     List<Enemy> enemies;
     private List<Rectangle> intersections;
     private Texture2D rectangleTexture;
-    
+
     private SoundEffect[] footsteps;
     private int footstepIndex = 0;
     private float footstepTimer = 0f;
@@ -42,22 +42,47 @@ public class Game1 : Game
     private bool showAttackHitbox;
     private float attackDebugTimer;
     private const float AttackDebugDuration = 0.08f;
-    private const float AttackCooldown = 0.25f;
+    private const float AttackCooldown = 0.75f;
     private float attackCooldownTimer;
-    
+
     private int currentLevel = 1;
     private Rectangle doorRect;
-    
+
     private Texture2D keyTexture;
     private Key levelKey = null;
     private bool keySpawned = false;
     private bool hasKey = false;
     private Rectangle lastDeadEnemyRect;
-    
-    private Texture2D skel1Tex;
-    private Texture2D skel2Tex;
-    private Texture2D vampTex;
-    
+
+    private Texture2D skel1Idle, skel1Walk, skel1Attack, skel1Hurt, skel1Death;
+
+    private Texture2D skel2Idle, skel2Walk, skel2Attack, skel2Hurt, skel2Death;
+
+    private Texture2D vampIdle, vampWalk, vampAttack, vampHurt, vampDeath;
+
+    private Texture2D playerIdleTex;
+    private Texture2D playerWalkTex;
+    private Texture2D playerHurtTex;
+    private Texture2D playerDeathTex;
+    private Texture2D playerAtk1Tex;
+    private Texture2D playerAtk2Tex;
+
+
+    private Texture2D lightCircleTexture;
+    private RenderTarget2D lightTarget;
+    private RenderTarget2D sceneTarget;
+    private const int LightRadius = 700;
+
+    private static readonly BlendState EraseAlphaBlend = new BlendState
+    {
+        ColorBlendFunction    = BlendFunction.Add,
+        ColorSourceBlend      = Blend.Zero,
+        ColorDestinationBlend = Blend.One,
+        AlphaBlendFunction    = BlendFunction.Add,
+        AlphaSourceBlend      = Blend.Zero,
+        AlphaDestinationBlend = Blend.InverseSourceAlpha
+    };
+
     private bool isGameOver = false;
     private bool isGameWon = false;
 
@@ -119,9 +144,9 @@ public class Game1 : Game
         if (player == null)
         {
             player = new Player(
-                Content.Load<Texture2D>("Player/player"),
-                new Rectangle((int)spawnTile.X * TILESIZE, (int)spawnTile.Y * TILESIZE, TILESIZE, TILESIZE),
-                new Rectangle(0, 0, 32, 32)
+                playerIdleTex, playerWalkTex, playerHurtTex,
+                playerDeathTex, playerAtk1Tex, playerAtk2Tex,
+                new Rectangle((int)spawnTile.X * TILESIZE, (int)spawnTile.Y * TILESIZE, TILESIZE, TILESIZE)
             );
         }
         else
@@ -135,7 +160,7 @@ public class Game1 : Game
 
         enemies = CreateEnemies(level, spawnTile);
     }
-    
+
 
     private Vector2 FindSpawnTile(Dictionary<Vector2, int> floorLayer, Dictionary<Vector2, int> collisionLayer)
     {
@@ -206,16 +231,19 @@ public class Game1 : Game
 
         for (var i = 0; i < tiles.Count; i++)
         {
-            var tex = (i % 3 == 2) ? vampTex : (i % 2 == 0 ? skel1Tex : skel2Tex);
-            list.Add(new Enemy(
-                tex,
-                new Rectangle((int)tiles[i].X * TILESIZE, (int)tiles[i].Y * TILESIZE, TILESIZE, TILESIZE),
-                new Rectangle(0, 0, 32, 32)
-            ));
+            var pos = new Rectangle((int)tiles[i].X * TILESIZE, (int)tiles[i].Y * TILESIZE, TILESIZE, TILESIZE);
+            Enemy enemy;
+            if (i % 3 == 2)
+                enemy = new Enemy(vampIdle, 6, vampWalk, 8, vampAttack, 16, vampHurt, 5, vampDeath, 14, pos);
+            else if (i % 2 == 0)
+                enemy = new Enemy(skel1Idle, 6, skel1Walk, 10, skel1Attack, 9, skel1Hurt, 5, skel1Death, 17, pos);
+            else
+                enemy = new Enemy(skel2Idle, 6, skel2Walk, 10, skel2Attack, 15, skel2Hurt, 5, skel2Death, 15, pos);
+            list.Add(enemy);
         }
         return list;
     }
-    
+
 
     protected override void Initialize()
     {
@@ -231,9 +259,30 @@ public class Game1 : Game
         hitBoxTexture = Content.Load<Texture2D>("TileSets/collisionTiles");
         keyTexture = Content.Load<Texture2D>("Keys/key");
 
-        skel1Tex = Content.Load<Texture2D>("Enemies/Skeleton1/enemies-skeleton1_movement");
-        skel2Tex = Content.Load<Texture2D>("Enemies/Skeleton2/enemies-skeleton2_movemen");
-        vampTex = Content.Load<Texture2D>("Enemies/Vampire/enemies-vampire_movement");
+        skel1Idle   = Content.Load<Texture2D>("Enemies/Skeleton1/enemies-skeleton1_idle");
+        skel1Walk   = Content.Load<Texture2D>("Enemies/Skeleton1/enemies-skeleton1_movement");
+        skel1Attack = Content.Load<Texture2D>("Enemies/Skeleton1/enemies-skeleton1-attack");
+        skel1Hurt   = Content.Load<Texture2D>("Enemies/Skeleton1/enemies-skeleton1_take_damage");
+        skel1Death  = Content.Load<Texture2D>("Enemies/Skeleton1/enemies-skeleton1_death");
+
+        skel2Idle   = Content.Load<Texture2D>("Enemies/Skeleton2/enemies-skeleton2_idle");
+        skel2Walk   = Content.Load<Texture2D>("Enemies/Skeleton2/enemies-skeleton2_movemen");
+        skel2Attack = Content.Load<Texture2D>("Enemies/Skeleton2/enemies-skeleton2_attack");
+        skel2Hurt   = Content.Load<Texture2D>("Enemies/Skeleton2/enemies-skeleton2_take_damage");
+        skel2Death  = Content.Load<Texture2D>("Enemies/Skeleton2/enemies-skeleton2_death");
+
+        vampIdle   = Content.Load<Texture2D>("Enemies/Vampire/enemies-vampire_idle");
+        vampWalk   = Content.Load<Texture2D>("Enemies/Vampire/enemies-vampire_movement");
+        vampAttack = Content.Load<Texture2D>("Enemies/Vampire/enemies-vampire_attack");
+        vampHurt   = Content.Load<Texture2D>("Enemies/Vampire/enemies-vampire_take_damage");
+        vampDeath  = Content.Load<Texture2D>("Enemies/Vampire/enemies-vampire_death");
+
+        playerIdleTex  = Content.Load<Texture2D>("Player/Soldier-Idle");
+        playerWalkTex  = Content.Load<Texture2D>("Player/Soldier-Walk");
+        playerHurtTex  = Content.Load<Texture2D>("Player/Soldier-Hurt");
+        playerDeathTex = Content.Load<Texture2D>("Player/Soldier-Death");
+        playerAtk1Tex  = Content.Load<Texture2D>("Player/Soldier-Attack01");
+        playerAtk2Tex  = Content.Load<Texture2D>("Player/Soldier-Attack02");
 
         rectangleTexture = new Texture2D(GraphicsDevice, 1, 1);
         rectangleTexture.SetData(new[] { Color.White });
@@ -244,7 +293,29 @@ public class Game1 : Game
         for (var i = 0; i < 21; i++)
             footsteps[i] = Content.Load<SoundEffect>($"Audio/FootstepsFloor/Steps_floor-{i + 1:D3}");
 
+        lightCircleTexture = CreateCircleTexture(LightRadius);
+        var vp = GraphicsDevice.Viewport;
+        lightTarget = new RenderTarget2D(GraphicsDevice, vp.Width, vp.Height);
+        sceneTarget = new RenderTarget2D(GraphicsDevice, vp.Width, vp.Height);
+
         LoadLevel(1);
+    }
+
+    private Texture2D CreateCircleTexture(int radius)
+    {
+        int d = radius * 2;
+        var tex = new Texture2D(GraphicsDevice, d, d);
+        var data = new Color[d * d];
+        var center = new Vector2(radius, radius);
+        for (int y = 0; y < d; y++)
+            for (int x = 0; x < d; x++)
+            {
+                float t = MathHelper.Clamp(1f - Vector2.Distance(new Vector2(x, y), center) / radius, 0f, 1f);
+                t = t * t;
+                data[y * d + x] = new Color(t, t, t, t);
+            }
+        tex.SetData(data);
+        return tex;
     }
 
     protected override void Update(GameTime gameTime)
@@ -256,7 +327,7 @@ public class Game1 : Game
         KeyboardState currentKBState = Keyboard.GetState();
         MouseState currentMouseState = Mouse.GetState();
         var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-        
+
         if (isGameOver || isGameWon)
         {
             if (currentKBState.IsKeyDown(Keys.R) && !prevKBState.IsKeyDown(Keys.R))
@@ -270,11 +341,11 @@ public class Game1 : Game
             base.Update(gameTime);
             return;
         }
-        
+
 
         player.Update(currentKBState, deltaTime);
         player.rect = collisionSystem.MoveWithCollisions(player.rect, player.velocity, out intersections);
-        
+
         if (player.IsMoving)
         {
             footstepTimer -= deltaTime;
@@ -292,7 +363,7 @@ public class Game1 : Game
 
         foreach (var e in enemies)
             e.Update(player, collisionSystem, deltaTime);
-        
+
         for (var i = 0; i < enemies.Count; i++)
         {
             if (!enemies[i].IsAlive) continue;
@@ -322,7 +393,7 @@ public class Game1 : Game
                 }
             }
         }
-        
+
         if (!keySpawned && enemies.Count > 0)
         {
             var allDead = true;
@@ -333,11 +404,11 @@ public class Game1 : Game
                 levelKey = new Key(keyTexture, lastDeadEnemyRect);
             }
         }
-        
+
         levelKey?.Update(player.rect);
         if (levelKey != null && levelKey.IsPickedUp && !hasKey)
             hasKey = true;
-        
+
         if (hasKey && doorRect != Rectangle.Empty && player.rect.Intersects(doorRect))
         {
             if (currentLevel == 1)
@@ -368,6 +439,7 @@ public class Game1 : Game
 
         if (clickedLeftMouse && attackCooldownTimer <= 0f)
         {
+            player.TriggerAttack();
             lastAttackHitbox = BuildAttackHitbox(currentMouseState);
             showAttackHitbox = true;
             attackDebugTimer = AttackDebugDuration;
@@ -391,8 +463,9 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
+        GraphicsDevice.SetRenderTarget(sceneTarget);
         GraphicsDevice.Clear(Color.Black);
-        
+
         _spriteBatch.Begin(
             transformMatrix: Matrix.CreateTranslation(followCamera.position.X, followCamera.position.Y, 0f),
             samplerState: SamplerState.PointClamp
@@ -402,38 +475,41 @@ public class Game1 : Game
         DrawLayer(TILESIZE, 10, 32, floor, mapLevel1);
         DrawLayer(TILESIZE, 10, 32, middle, mapLevel1);
 
-        foreach (var rect in intersections)
-            DrawRectHollow(_spriteBatch, new Rectangle(rect.X * TILESIZE, rect.Y * TILESIZE, TILESIZE, TILESIZE), 4);
-
         levelKey?.Draw(_spriteBatch);
-
         player.Draw(_spriteBatch);
-        DrawRectHollow(_spriteBatch, player.rect, 4);
-
         foreach (var e in enemies)
-        {
-            if (e.IsAlive)
-            {
-                e.Draw(_spriteBatch);
-                DrawRectHollow(_spriteBatch, e.rect, 4);
-            }
-        }
-
-        if (showAttackHitbox)
-            DrawRectHollow(_spriteBatch, lastAttackHitbox, 2);
+            if (e.IsAlive || !e.IsDeathFinished) e.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
+        GraphicsDevice.SetRenderTarget(lightTarget);
+        GraphicsDevice.Clear(new Color(0, 0, 0, 240));
+
+        var playerScreenX = player.rect.Center.X + (int)followCamera.position.X;
+        var playerScreenY = player.rect.Center.Y + (int)followCamera.position.Y;
+        _spriteBatch.Begin(blendState: EraseAlphaBlend, samplerState: SamplerState.LinearClamp);
+        _spriteBatch.Draw(lightCircleTexture,
+            new Rectangle(playerScreenX - LightRadius, playerScreenY - LightRadius, LightRadius * 2, LightRadius * 2),
+            Color.White);
+        _spriteBatch.End();
+
+        GraphicsDevice.SetRenderTarget(null);
+        GraphicsDevice.Clear(Color.Black);
+
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        _spriteBatch.Draw(sceneTarget, GraphicsDevice.Viewport.Bounds, Color.White);
+        _spriteBatch.End();
+
+        _spriteBatch.Begin(samplerState: SamplerState.LinearClamp);
+        _spriteBatch.Draw(lightTarget, GraphicsDevice.Viewport.Bounds, Color.White);
+        _spriteBatch.End();
 
         var vp = GraphicsDevice.Viewport;
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
         _spriteBatch.DrawString(font, $"Level: {currentLevel}", new Vector2(0, 0), Color.White);
         _spriteBatch.DrawString(font, $"Player HP: {player.Health}", new Vector2(0, 20), Color.White);
-
-        for (var i = 0; i < enemies.Count; i++)
-            _spriteBatch.DrawString(font, $"Enemy {i + 1} HP: {enemies[i].Health}",
-                new Vector2(0, 40 + i * 20), Color.White);
+        _spriteBatch.DrawString(font, $"Enemies: {enemies.Count}", new Vector2(0, 41), Color.White);
 
         if (hasKey)
         {
@@ -442,12 +518,12 @@ public class Game1 : Game
             _spriteBatch.DrawString(font, keyMsg,
                 new Vector2((vp.Width - keySize.X) / 2f, 10), Color.Gold);
         }
-        
+
         if (isGameOver)
         {
             _spriteBatch.Draw(rectangleTexture,
                 new Rectangle(0, 0, vp.Width, vp.Height),
-                new Color(0, 0, 0, 256));
+                new Color(0, 0, 0, 100));
 
             var died = "NOOO WAAY, YOU ARE DEAD";
             var restart = "FAST PRESS R AND GO FIGHT AGAIN";
@@ -459,6 +535,30 @@ public class Game1 : Game
                 Color.Red);
             _spriteBatch.DrawString(font, restart,
                 new Vector2((vp.Width - restartSize.X) / 2f, vp.Height / 2f + 10),
+                Color.White);
+        }
+
+        if (isGameWon)
+        {
+            _spriteBatch.Draw(rectangleTexture,
+                new Rectangle(0, 0, vp.Width, vp.Height),
+                new Color(0, 0, 0, 220));
+
+            var won     = "VICTORY!";
+            var sub     = "YOU HAVE FOUND THE LIGHT";
+            var restart = "PRESS R TO PLAY AGAIN";
+            var wonSize     = font.MeasureString(won);
+            var subSize     = font.MeasureString(sub);
+            var restartSize = font.MeasureString(restart);
+
+            _spriteBatch.DrawString(font, won,
+                new Vector2((vp.Width - wonSize.X) / 2f, vp.Height / 2f - 60),
+                Color.Gold);
+            _spriteBatch.DrawString(font, sub,
+                new Vector2((vp.Width - subSize.X) / 2f, vp.Height / 2f),
+                Color.White);
+            _spriteBatch.DrawString(font, restart,
+                new Vector2((vp.Width - restartSize.X) / 2f, vp.Height / 2f + 60),
                 Color.White);
         }
 
@@ -489,8 +589,6 @@ public class Game1 : Game
             attackSize, attackSize
         );
     }
-
-    // дебагер 
 
     private void DrawLayer(int display_tilesize, int num_tiles_per_row, int pixel_tilesize,
         Dictionary<Vector2, int> layer, Texture2D texture)

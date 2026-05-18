@@ -10,18 +10,24 @@ public class AnimationManager
     int counter;
     int activeFrame;
     int intervall;
+    bool loop;
 
-    public AnimationManager(int numFrames, Vector2 size, int interval = 8)
+    public bool IsFinished { get; private set; }
+
+    public AnimationManager(int numFrames, Vector2 size, int interval = 8, bool loop = true)
     {
         this.numFrames = numFrames;
         this.size = size;
         this.intervall = interval;
+        this.loop = loop;
         counter = 0;
         activeFrame = 0;
+        IsFinished = false;
     }
 
     public void Update()
     {
+        if (IsFinished) return;
         counter++;
         if (counter >= intervall)
         {
@@ -35,8 +41,16 @@ public class AnimationManager
         activeFrame++;
         if (activeFrame >= numFrames)
         {
-            activeFrame = 0;
+            if (loop) activeFrame = 0;
+            else { activeFrame = numFrames - 1; IsFinished = true; }
         }
+    }
+
+    public void Reset()
+    {
+        counter = 0;
+        activeFrame = 0;
+        IsFinished = false;
     }
 
     public Rectangle GetFrame()
